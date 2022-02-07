@@ -19,6 +19,7 @@ def categories():
 # route function to render the all the categires
 @app.route("/add_category", methods=["GET", "POST"])
 def add_category():
+    """ Function to add categories"""
     # here is the post method
     if request.method == "POST":
         category = Category(category_name=request.form.get("category_name"))
@@ -28,3 +29,16 @@ def add_category():
         return redirect(url_for('categories'))
 
     return render_template("add_category.html")
+
+
+# route for edditing categories
+# to pass the category_id from the edit_category we use this(<int:category_id>)
+@app.route("/edit_category/<int:category_id>", methods = ["GET", "POST"])
+def edit_category(category_id):
+    """we also need to pass "category_id" into the function here as well"""
+    category = Category.query.get_or_404(category_id)
+    if request.method == "POST":
+        category.category_name = request.form.get("category_name")
+        db.session.commit()
+        return redirect(url_for("categories"))
+    return render_template("edit_category.html", category=category)
