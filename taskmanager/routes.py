@@ -6,4 +6,5 @@ from taskmanager.modules import Category, Task
 
 @app.route("/")
 def home():
-    return render_template("base.html") # noqa
+    return render_template("tasks.html") # noqa
+
