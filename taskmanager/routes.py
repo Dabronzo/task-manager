@@ -6,7 +6,10 @@ from taskmanager.modules import Category, Task
 
 @app.route("/")
 def home():
-    return render_template("tasks.html") # noqa
+    """Display all the task from the database"""
+    tasks = list(Task.query.order_by(Task.task_name).all())
+    return render_template("tasks.html", tasks=tasks) # noqa
+
 
 # route to open the categories page
 @app.route("/categories")
@@ -50,3 +53,23 @@ def delete_category(category_id):
     db.session.delete(category)
     db.session.commit()
     return redirect(url_for("categories"))
+
+@app.route("/add_task", methods=["GET","POST"])
+def add_task():
+    """ Adding new tasks to the db """
+    # get the list of all the categories that exist on the database
+    # since that the user need to select one of those
+    categories = list(Category.query.order_by(Category.category_name).all())
+
+    if request.method == "POST":
+        task = Task(
+            task_name=request.form.get("task_name"),
+            task_descripiton=request.form.get("task_description"),
+            is_urget=bool(True if request.form.get("is_urgent") else False),
+            due_date=request.form.get("due_date"),
+            category_id=request.form.get("category_id")
+        )
+        db.session.add(task)
+        db.session.commit()
+        return redirect(url_for("home"))
+    return render_template("add_task.html", categories=categories)
