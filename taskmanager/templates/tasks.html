@@ -11,8 +11,12 @@
     {% for task in tasks %}
     <ul class="collapsible">
         <li>
-          <div class="collapsible-header light-blue darken-1"><i class="fas fa-thumbtack"></i>{{ task.task_name }}</div>
-          <div class="collapsible-body"><span>{{ task.task_descripiton }}</span></div>
+          <div class="collapsible-header light-blue darken-1"><i class="fas fa-thumbtack"></i>{{ task.task_name }}
+            <a href="{{ url_for('edit_task', task_id=task.id) }}" class="btn green accent-4">Edit</a>
+            <a href="" class="btn red">Delete</a>
+          </div>
+          <div class="collapsible-body"><span>{{ task.task_descripiton }}</span>
+          </div>
         </li>
       </ul>
     {% endfor %}
