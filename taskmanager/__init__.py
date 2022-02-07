@@ -1,4 +1,5 @@
-# the __init__ file allow us to use custom libraries and will start the application as a package
+# the __init__ file allow us to use custom libraries and 
+# will start the application as a package
 import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
