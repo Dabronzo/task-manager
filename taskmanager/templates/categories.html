@@ -20,7 +20,7 @@
                 <div class="card-action">
                     <!--Here we will pass to the edit_category the id of the category from this for instance-->
                     <a href="{{ url_for('edit_category', category_id=category.id) }}" class="btn green accent-4">Edit</a>
-                    <a href="#" class="btn red">Delete</a>
+                    <a href="{{ url_for('delete_category', category_id=category.id) }}" class="btn red">Delete</a>
                 </div>
             </div>
         </div>
