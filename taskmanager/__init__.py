@@ -1,6 +1,7 @@
 # the __init__ file allow us to use custom libraries and 
 # will start the application as a package
 import os
+import re
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
@@ -17,7 +18,10 @@ app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
 if os.environ.get("DEVELOPMENT") == "True":
     app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DB_URL")
 else:
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
+    uri = os.environ.get("DATABASE_URL")
+    if uri.startswith("postgres://"):
+        uri = uri.replace("postgres://", "postgresql://", 1)
+    app.config["SQLALCHEMY_DATABASE_URI"] = uri
 
 # then we create a db that is an instance of the SQLALchemy with the  flask instance "app"
 db = SQLAlchemy(app)
