@@ -49,4 +49,4 @@ class Task(db.Model):
 
     def __repr__(self):
         # to represent itself in a form of a string
-        return f'#{self.id} - Task: {self.task_descripiton} | Urgent: {self.is_urget}'
+        return f'#{self.id} - Task: {self.task_descripiton} | Urgent: {self.is_urgent}'

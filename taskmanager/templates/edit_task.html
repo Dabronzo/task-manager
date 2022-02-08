@@ -14,7 +14,9 @@
             <!--Task description-->
             <div class="row">
                 <div class="input-field col s12">
-                    <textarea name="task_description" id="task_description" value="{{ task.task_descripiton }}" minlength="5" maxlength="200" type="text" class="materialize-textarea validate" >
+                    <!--The - on the jinja code bellow is to eliminate white spaces-->
+                    <textarea name="task_description" id="task_description" minlength="5" maxlength="200" type="text" class="materialize-textarea validate" required>
+                        {{- task.task_descripiton -}}
                     </textarea>
                     <label for="task_description">Task Description</label>
                 </div>
@@ -32,7 +34,11 @@
                 <div class="input-field col s12">
                     <div class="switch">
                         <label for="is_urgent">
-                            <input name="is_urgent" id="is_urgent" type="checkbox">
+                            {% if task.is_urget == True %}
+                                <input name="is_urgent" id="is_urgent" type="checkbox" checked>
+                            {% else %}
+                                <input name="is_urgent" id="is_urgent" type="checkbox">
+                            {% endif %}
                             <span class="lever"></span>
                             Is Urgent
                         </label>
@@ -45,7 +51,11 @@
                     <select name="category_id" id="category_id" class="validate" required>
                         <option value="{{ task.category_id }}" disabled selected>Choose a Category</option>
                         {% for category in categories %}
-                            <option value="{{ category.id }}">{{ category.category_name }}</option>
+                            {% if category == task.category %}
+                                <option value="{{ category.id }}"  selected>{{ category.category_name }}</option>
+                            {% else %}
+                                <option value="{{ category.id }}">{{ category.category_name }}</option>
+                            {% endif %}
                         {% endfor %}
                         <!--Loop on tall the categories-->
                     </select>

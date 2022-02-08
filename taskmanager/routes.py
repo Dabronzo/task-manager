@@ -65,7 +65,7 @@ def add_task():
         task = Task(
             task_name=request.form.get("task_name"),
             task_descripiton=request.form.get("task_description"),
-            is_urget=bool(True if request.form.get("is_urgent") else False),
+            is_urgent=bool(True if request.form.get("is_urgent") else False),
             due_date=request.form.get("due_date"),
             category_id=request.form.get("category_id")
         )
@@ -79,12 +79,22 @@ def add_task():
 def edit_task(task_id):
     """we also need to pass "category_id" into the function here as well"""
     task = Task.query.get_or_404(task_id)
+    categories = list(Category.query.order_by(Category.category_name).all())
     if request.method == "POST":
         task.task_name = request.form.get("task_name")
-        task.task_descripiton = request.form.get("task_descripiton")
-        task.is_urget = bool(True if request.form.get("is_urgent")else False)
+        task.task_descripiton = request.form.get("task_description")
+        task.is_urgent = bool(True if request.form.get("is_urgent")else False)
         task.due_date = request.form.get("due_date")
         task.category_id = request.form.get("category_id")
         db.session.commit()
         return redirect(url_for("home"))
-    return render_template("edit_task.html", task=task)
+    return render_template("edit_task.html", task=task, categories=categories)
+
+@app.route("/delete_task/<int:task_id>")
+def delete_task(task_id):
+    """Function to delete a task"""
+    task = Task.query.get_or_404(task_id)
+
+    db.session.delete(task)
+    db.session.commit()
+    return redirect(url_for("home"))
