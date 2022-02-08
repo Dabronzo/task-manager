@@ -13,7 +13,11 @@ if os.path.exists("env.py"):
 # then we attach the secret key and db url to this app instanse that was created
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DB_URL")
+
+if os.environ.get("DEVELOPMENT") == "True":
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DB_URL")
+else:
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
 
 # then we create a db that is an instance of the SQLALchemy with the  flask instance "app"
 db = SQLAlchemy(app)
